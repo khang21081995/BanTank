@@ -5,7 +5,7 @@ class Bullet{
   // }
 
   constructor(tank){
-    this.sprite = TankOnline.game.add.sprite(tank.sprite.x,tank.sprite.y, 'bulletDown');
+    this.sprite = TankOnline.game.add.sprite(tank.sprite.x+9.5,tank.sprite.y+9.5, 'bulletDown');
     TankOnline.game.physics.arcade.enable(this.sprite);
   }
 
