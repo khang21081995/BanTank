@@ -1,0 +1,5 @@
+CMD
+Step 1: npm install http-server -g
+Step 2: cd C:\Users\khang\Desktop\Techkids\BanTank
+Step 3: http-server -p 6969
+Step 4: play at: localhost:6969
