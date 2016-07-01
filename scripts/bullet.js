@@ -1,33 +1,23 @@
 class Bullet{
-  // constructor(x,y){
-  //   this.sprite = TankOnline.game.add.sprite(x, y, 'bulletDown');
-  //   TankOnline.game.physics.arcade.enable(this.sprite);
-  // }
-
   constructor(tank){
-    this.sprite = TankOnline.game.add.sprite(tank.sprite.x+9.5,tank.sprite.y+9.5, 'bulletDown');
-    TankOnline.game.physics.arcade.enable(this.sprite);
-  }
-
-  update(direction){
-    if(direction == 0){
-      this.sprite.body.velocity.x = -500;
-      this.sprite.loadTexture('bulletLeft');
-    }else
-    if (direction ==1){
-      this.sprite.body.velocity.x = 500;
-      this.sprite.loadTexture('bulletRight');
-    }else
-    if(direction == 2){
-      this.sprite.body.velocity.y = -500;
-      this.sprite.loadTexture('bulletUp');
-    }else
-    if (direction ==3 || direction == -1){
-      this.sprite.body.velocity.y = 500;
-      this.sprite.loadTexture('bulletDown');
+    var spriteName;
+    if(tank.direction.x > 0){
+      spriteName = 'bulletRight';
+    }
+    else if(tank.direction.x < 0){
+      spriteName = 'bulletLeft';
+    }
+    else if(tank.direction.y > 0){
+      spriteName = 'bulletDown';
+    }
+    else if(tank.direction.y < 0){
+      spriteName = 'bulletUp';
     }
 
-    //this.sprite.destroy();
+    this.sprite = TankOnline.bulletGroup.create(tank.sprite.x, tank.sprite.y, spriteName);
+    this.sprite.anchor.set(0.5,0.5);
 
+    this.sprite.body.velocity = new Phaser.Point(tank.direction.x * 500, tank.direction.y * 500);
+    this.sprite.bulletDamage = 1;
   }
 }
