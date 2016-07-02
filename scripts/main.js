@@ -99,10 +99,12 @@ var update = function() {
     TankOnline.game.physics.arcade.collide(tank2.sprite, wallGroup);
     TankOnline.game.physics.arcade.collide(tank2.sprite, enemyGroup);
     TankOnline.game.physics.arcade.collide(tank2.sprite, allyGroup);
+
     TankOnline.game.physics.arcade.overlap(TankOnline.bulletGroup, wallGroup, onBulletHitWall, null, this);
     TankOnline.game.physics.arcade.overlap(TankOnline.bulletGroup, enemyGroup, onBulletHitEnemy, null, this);
-    TankOnline.game.physics.arcade.overlap(TankOnline.bulletGroup, allyGroup, onBulletHitAlly, null, this);
-
+    TankOnline.game.physics.arcade.overlap(TankOnline.bulletGroup, tank.sprite, onBulletHitAlly, null, this);
+    TankOnline.game.physics.arcade.overlap(TankOnline.bulletGroup, tank2.sprite, onBulletHitAlly, null, this);
+    enemyGroup.update(new Phaser.Point(0,0));
     var direction = new Phaser.Point();
     if (TankOnline.keyboard.isDown(Phaser.KeyCode.LEFT)) direction.x = -1;
     else if (TankOnline.keyboard.isDown(Phaser.KeyCode.RIGHT)) direction.x = 1;
@@ -144,9 +146,10 @@ var onBulletHitEnemy = function(bulletSprite, enemySprite) {
 }
 
 var onBulletHitAlly = function(bulletSprite, allySprite) {
-    if (bulletSprite.typeOfBullet != allySprite.typeOfTank ) {
+    if (!(bulletSprite.typeOfBullet == allySprite.typeOfTank)) {
         allySprite.damage(bulletSprite.bulletDamage);
-      //  if(allySprite.health == 0 ) allySprite.destroy();
         bulletSprite.kill();
+        if (allySprite.health === 0) allySprite.destroy();
+
     }
 }

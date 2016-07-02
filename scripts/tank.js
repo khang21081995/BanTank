@@ -1,5 +1,6 @@
 class Tank {
     constructor(x, y, group,typeOfTank) {
+
         if(typeOfTank=== 1){
             this.tankLeft = 'tankLeft';
             this.tankRight = 'tankRight';
@@ -16,15 +17,18 @@ class Tank {
             this.tankRight = 'tankRight3';
             this.tankUp = 'tankUp3';
             this.tankDown = 'tankDown3';
+
         }
         this.sprite = group.create(x, y, this.tankDown);
         TankOnline.game.physics.arcade.enable(this.sprite);
+        if(typeOfTank == 3)
+         this.sprite.body.immovable = true;
         this.sprite.anchor.set(0.5, 0.5);
         this.direction = new Phaser.Point(0, 1);
         this.lastShotTime = TankOnline.game.time.now;
         this.sprite.body.collideWorldBounds = true;
         this.sprite.health = 5;
-
+        this.sprite.body.velocity = new Phaser.Point(0, 0);
 
     }
 
