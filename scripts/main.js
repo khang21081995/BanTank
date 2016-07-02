@@ -146,7 +146,9 @@ var onBulletHitEnemy = function(bulletSprite, enemySprite) {
 }
 
 var onBulletHitAlly = function(bulletSprite, allySprite) {
-    if (!(bulletSprite.typeOfBullet == allySprite.typeOfTank)) {
+    console.log(bulletSprite.typeOfBullet+' : '+ allySprite.typeOfTank);
+    console.log();
+    if ((bulletSprite.typeOfBullet !== allySprite.typeOfTank)) {
         allySprite.damage(bulletSprite.bulletDamage);
         bulletSprite.kill();
         if (allySprite.health === 0) allySprite.destroy();

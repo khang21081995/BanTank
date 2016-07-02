@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(tank,typeOfBullet) {
+    constructor(tank) {
         var spriteName;
         if (tank.direction.x > 0) {
             spriteName = 'bulletRight';
@@ -13,7 +13,8 @@ class Bullet {
 
         this.sprite = TankOnline.bulletGroup.create(tank.sprite.x, tank.sprite.y, spriteName);
         this.sprite.anchor.set(0.5, 0.5);
-
+        this.sprite.typeOfBullet = tank.sprite.typeOfTank;
+        console.log(tank.sprite.typeOfTank);
         this.sprite.body.velocity = new Phaser.Point(tank.direction.x * 500, tank.direction.y * 500);
         this.sprite.bulletDamage = 1;
     }

@@ -21,6 +21,8 @@ class Tank {
         }
         this.sprite = group.create(x, y, this.tankDown);
         TankOnline.game.physics.arcade.enable(this.sprite);
+        this.sprite.typeOfTank = typeOfTank;
+        console.log(typeOfTank);
         if(typeOfTank == 3)
          this.sprite.body.immovable = true;
         this.sprite.anchor.set(0.5, 0.5);
@@ -61,7 +63,7 @@ class Tank {
     fire() {
         if (TankOnline.game.time.now - this.lastShotTime > 200) {
             this.lastShotTime = TankOnline.game.time.now;
-            new Bullet(this,this.typeOfTank);
+            new Bullet(this);
         }
     }
 }
