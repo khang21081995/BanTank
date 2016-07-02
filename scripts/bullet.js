@@ -1,5 +1,5 @@
 class Bullet {
-    constructor(tank,typeOfTank) {
+    constructor(tank,typeOfBullet) {
         var spriteName;
         if (tank.direction.x > 0) {
             spriteName = 'bulletRight';

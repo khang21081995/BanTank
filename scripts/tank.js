@@ -1,5 +1,5 @@
 class Tank {
-    constructor(x, y, group,typeOfTank) {//type = enemy/allyw
+    constructor(x, y, group,typeOfTank) {
         if(typeOfTank=== 1){
             this.tankLeft = 'tankLeft';
             this.tankRight = 'tankRight';
