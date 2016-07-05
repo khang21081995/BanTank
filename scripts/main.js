@@ -13,6 +13,8 @@ var TankOnline = {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
+
+
 }
 
 window.onload = function() {
@@ -39,22 +41,37 @@ var preload = function() {
     TankOnline.game.load.image('bulletRight', './images/bullet_right.png');
 
     TankOnline.game.load.image('wall', './images/wall_steel.png');
+
 }
 
 var create = function() {
+    TankOnline.client = new Client();
     TankOnline.game.physics.startSystem(Phaser.Physics.ARCADE);
     TankOnline.keyboard = TankOnline.game.input.keyboard;
-
+    TankOnline.game.world.setBounds(0, 0, 3200, 800);
 
     TankOnline.wallGroup = TankOnline.game.add.physicsGroup();
     TankOnline.bulletGroup = TankOnline.game.add.physicsGroup();
     TankOnline.tankGroup = TankOnline.game.add.physicsGroup();
 
-    var tank = new Tank(window.innerWidth / 2, window.innerHeight / 2, TankOnline.tankGroup);
-    TankOnline.inputController = new InputController(TankOnline.keyboard, tank);
+    // = new Tank(window.innerWidth / 2, window.innerHeight / 2, TankOnline.tankGroup);
+    var tank;
+    TankOnline.initialize = function(dataX, dataY) {
+        console.log(dataX + ':' + dataY);
+        console.log(window.innerWidth + ':' + window.innerHeight);
+        console.log(TankOnline.game.world.width + ':' + TankOnline.game.world.height);
+        //tank = new Tank(dataX, dataY, TankOnline.tankGroup);
+        tank = new Tank(dataX, dataY, TankOnline.tankGroup);
 
-    TankOnline.game.world.setBounds(0, 0, 3200, 800);
-    TankOnline.game.camera.follow(tank.sprite);
+        TankOnline.game.camera.follow(tank.sprite);
+        TankOnline.inputController = new InputController(TankOnline.keyboard, tank);
+        //TankOnline.inputController.update();
+
+    }
+
+    //console.log(TankOnline.positionX + '------' + TankOnline.positionY);
+    //= new Tank(TankOnline.positionX,TankOnline.positionY, TankOnline.tankGroup);
+
 
     for (var i = 0; i < TankOnline.map.length; i++) {
         for (var j = 0; j < TankOnline.map[i].length; j++) {
@@ -89,8 +106,8 @@ var update = function() {
         null,
         this
     );
-
-    TankOnline.inputController.update();
+    if(TankOnline.inputController)
+       TankOnline.inputController.update();
 }
 
 var onBulletHitWall = function(bulletSprite, wallSprite) {

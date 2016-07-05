@@ -19,7 +19,7 @@ class InputController {
             this.tank.update(direction);
 
             if (this.keyboard.isDown(Phaser.KeyCode.SPACEBAR) &&
-                TankOnline.game.time.now - this.lastShotTime > 200) {
+                TankOnline.game.time.now - this.lastShotTime > 300) {
                 this.lastShotTime = TankOnline.game.time.now;
                 this.fire();
             }
