@@ -13,9 +13,8 @@ io.on('connection', function(socket) {
     console.log('New User Connected');
     socket.emit('connected', 'You have connected to server');
     socket.emit('position', {
-
-        x: Math.random()*TankOnline.game.world.height,
-        y: Math.random()*TankOnline.game.world.width
+        x: Math.random(),
+        y: Math.random()
     })
 });
 
