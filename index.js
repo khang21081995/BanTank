@@ -10,10 +10,10 @@ app.get('/', function(req, res){
 });
 
 var players = [];
-var getPlayerById = function(id){
+var getPlayerById = function(id,killKo){
   for(var i=0;i<players.length;i++){
     if(players[i].id == id){
-      return players[i];
+      return killKo?players.splice(i,1)[0] :players[i];// splicce dung de xoa phan tu thu i trong mang
     }
   }
 }
@@ -37,19 +37,23 @@ io.on('connection', function(socket){
   players.push(newPlayerInfo);
 
   socket.on('tank_moved', function(data){
-    var playerInfo = getPlayerById(data.id);
+    var playerInfo = getPlayerById(data.id,false);
     playerInfo.x = data.position.x;
     playerInfo.y = data.position.y;
     socket.broadcast.emit('player_moved', data);
   });
 
   socket.on('tank_fired', function(data){
-    var playerInfo = getPlayerById(data.id);
+    var playerInfo = getPlayerById(data.id,false);
     playerInfo.x = data.position.x;
     playerInfo.y = data.position.y;
     socket.broadcast.emit('player_fired', data);
   });
 
+  socket.on('tank_died', function(data){
+    var playerInfo = getPlayerById(data.id,true);
+    socket.broadcast.emit('player_died', playerInfo);
+  });
 });
 
 http.listen(6969, function(){

@@ -88,27 +88,16 @@ var update = function() {
 /*
  *  HELPER FUNCTIONS
  */
-TankOnline.getPlayerById = function(id) {
-    for (var i = 0; i < TankOnline.enemies.length; i++) {
-        if (TankOnline.enemies[i].sprite.id == id) {
-            return TankOnline.enemies[i];
+TankOnline.getPlayerById = function(id, killKo) {
+        for (var i = 0; i < TankOnline.enemies.length; i++) {
+            if (TankOnline.enemies[i].sprite.id == id) {
+                return killKo ? TankOnline.enemies.splice(i, 1)[0] : TankOnline.enemies[i];
+            }
         }
     }
-}
-
-var tankById = function(id, killOnSight) {
-    for (var i = 0; i < TankOnline.enemies.length; i++) {
-        if (TankOnline.enemies[i].id == id) {
-            return killOnSight ? TankOnline.enemies.splice(i, 1)[0] : TankOnline.enemies[i];
-        }
-    }
-
-    return null;
-}
-
-/*
- * PHYSICS EVENTS
- */
+    /*
+     * PHYSICS EVENTS
+     */
 var onBulletHitWall = function(bulletSprite, wallSprite) {
     bulletSprite.kill();
 }
@@ -117,8 +106,10 @@ var onBulletHitTank = function(bulletSprite, tankSprite) {
     if (bulletSprite.tankSprite != tankSprite) {
         if (tankSprite.id == TankOnline.inputController.tank.sprite.id) {
             tankSprite.damage(bulletSprite.bulletDamage);
+
         }
         bulletSprite.kill();
+        if (!tankSprite.alive) TankOnline.client.reportDie(TankOnline.inputController.tank.sprite.id);
     }
 }
 
@@ -144,15 +135,18 @@ TankOnline.onReceivedNewPlayerData = function(data) {
 }
 
 TankOnline.onPlayerMoved = function(data) {
-    var enemy = TankOnline.getPlayerById(data.id);
+    var enemy = TankOnline.getPlayerById(data.id, false);
     enemy.sprite.position = data.position;
     enemy.update(data.direction);
 }
 
-
 TankOnline.onPlayerFired = function(data) {
-    var enemy = TankOnline.getPlayerById(data.id);
+    var enemy = TankOnline.getPlayerById(data.id, false);
     enemy.sprite.position = data.position;
-    enemy.direction = data.direction;
     new Bullet(enemy);
+}
+
+TankOnline.onPlayerDied = function(data) {
+    var enemy = TankOnline.getPlayerById(data.id, true);
+    enemy.sprite.destroy();
 }
