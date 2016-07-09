@@ -23,6 +23,7 @@ class InputController{
           && TankOnline.game.time.now - this.lastShotTime > 200
         ){
         this.lastShotTime = TankOnline.game.time.now;
+        TankOnline.client.reportFire(this.tank.sprite.id, direction, this.tank.sprite.position);
         this.fire();
       }
     }

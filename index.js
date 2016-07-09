@@ -42,6 +42,14 @@ io.on('connection', function(socket){
     playerInfo.y = data.position.y;
     socket.broadcast.emit('player_moved', data);
   });
+
+  socket.on('tank_fired', function(data){
+    var playerInfo = getPlayerById(data.id);
+    playerInfo.x = data.position.x;
+    playerInfo.y = data.position.y;
+    socket.broadcast.emit('player_fired', data);
+  });
+
 });
 
 http.listen(6969, function(){
